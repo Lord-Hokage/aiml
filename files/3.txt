@@ -1,0 +1,38 @@
+import numpy as np
+import pandas as pd
+data = pd.read_csv('enjoysport.csv')
+data
+concepts = np.array(data)[:,:-1]
+concepts
+target = np.array(data)[:,-1]
+target
+def learn(concepts, target):
+    specific_h = concepts[0].copy() 
+    print("initialization of specific_h and general_h")
+    print(specific_h)
+    general_h = [["?" for i in range(len(specific_h))] for i in range(len(specific_h))]
+    print(general_h)
+    for i, h in enumerate(concepts):
+        if target[i] == "Yes":
+            print("If instance is Positive ")
+            for x in range(len(specific_h)):
+                if h[x]!= specific_h[x]:
+                    specific_h[x] ='?' 
+                    general_h[x][x] ='?'
+            
+        if target[i] == "No":
+            print("If instance is Negative ")
+            for x in range(len(specific_h)):
+                if h[x]!= specific_h[x]:
+                    general_h[x][x] = specific_h[x]
+                else:
+                    general_h[x][x] = '?' 
+        print("Iteration["+str(i+1)+ "]")
+        print("Specific: "+str(specific_h))
+        print("General: "+str(general_h)+"\n\n")
+    general_h=[general_h[i] for i,h in enumerate(general_h) if h!=["?" for x in range(len(specific_h))]]  
+    return specific_h,general_h
+    specific,general=learn(concepts,target)
+print("Final hypothesis: ")
+print("Specific: "+str(specific))
+print("General: "+str(general))

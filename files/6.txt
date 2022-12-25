@@ -1,0 +1,16 @@
+import pandas as pd
+data=pd.read_csv('diabetes.csv')
+data.describe()
+from sklearn.model_selection import train_test_split
+x=data.drop('Outcome',axis=1)
+y=data[['Outcome']]
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.30,random_state=1)
+
+from sklearn.naive_bayes import GaussianNB
+model=GaussianNB()
+model.fit(x_train,y_train)
+y_pred=model.predict(x_test)
+
+from sklearn import metrics
+print('accuracy:',metrics.accuracy_score(y_test,y_pred))
